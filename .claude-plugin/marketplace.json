@@ -9,6 +9,11 @@
       "name": "hello-world",
       "source": "./plugins/hello-world",
       "description": "Minimal plugin used to validate the local-install pipeline"
+    },
+    {
+      "name": "github-ssh-key",
+      "source": "./plugins/github-ssh-key",
+      "description": "Generate per-org GitHub SSH keys, upload them to your GitHub account, and wire up SSH host aliases and git URL rewrites"
     }
   ]
 }
