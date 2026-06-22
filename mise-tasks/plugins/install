@@ -1,0 +1,46 @@
+#!/usr/bin/env zsh
+#MISE description="Install bundled plugins locally from this working copy (user scope)"
+
+source "${0:A:h}/_lib.sh"
+
+MARKETPLACE="seanodell"
+PLUGINS=(hello-world)
+
+need_claude
+need_jq
+
+# Register (or re-sync) this working copy as a local marketplace. A path-based
+# marketplace refreshes from the working copy via `marketplace update` — that's
+# what makes local edits live without a reinstall.
+if marketplace_registered "$MARKETPLACE"; then
+    info "Marketplace '$MARKETPLACE' already registered — re-syncing from working copy..."
+    if claude plugin marketplace update "$MARKETPLACE" >/dev/null 2>&1; then
+        success "Marketplace re-synced from $REPO_ROOT."
+    else
+        warn "Could not re-sync the marketplace — continuing with the registered copy."
+    fi
+else
+    info "Registering '$MARKETPLACE' from $REPO_ROOT..."
+    if claude plugin marketplace add "$REPO_ROOT" >/dev/null 2>&1; then
+        success "Marketplace registered."
+    else
+        error "Could not register the marketplace from $REPO_ROOT."
+        exit 1
+    fi
+fi
+
+# Install each catalogued plugin at user scope so its skills reach every project.
+for plugin in $PLUGINS; do
+    if plugin_installed "$plugin@$MARKETPLACE"; then
+        success "Plugin '$plugin' already installed — up to date."
+    elif claude plugin install "$plugin@$MARKETPLACE" --scope user >/dev/null 2>&1; then
+        success "Plugin '$plugin' installed at user scope."
+    else
+        error "Could not install '$plugin@$MARKETPLACE'."
+        exit 1
+    fi
+done
+
+print ""
+success "Done — bundled plugins installed at user scope, available in every project."
+dim "  Restart Claude Code to load newly installed skills."

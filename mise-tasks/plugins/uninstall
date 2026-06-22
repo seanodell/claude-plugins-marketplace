@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+#MISE description="Remove the locally-installed bundled plugins and deregister the marketplace"
+
+source "${0:A:h}/_lib.sh"
+
+MARKETPLACE="seanodell"
+PLUGINS=(hello-world)
+
+need_claude
+need_jq
+
+# Remove each catalogued plugin. -y skips the prune confirmation in non-TTY runs.
+for plugin in $PLUGINS; do
+    if ! plugin_installed "$plugin@$MARKETPLACE"; then
+        info "Plugin '$plugin' not installed — skipping."
+    elif claude plugin uninstall "$plugin@$MARKETPLACE" --scope user -y >/dev/null 2>&1 \
+        || claude plugin uninstall "$plugin" --scope user -y >/dev/null 2>&1; then
+        success "Plugin '$plugin' uninstalled."
+    else
+        warn "Could not uninstall '$plugin'."
+    fi
+done
+
+# Deregister the marketplace, restoring the pre-install state.
+if marketplace_registered "$MARKETPLACE"; then
+    if claude plugin marketplace remove "$MARKETPLACE" >/dev/null 2>&1; then
+        success "Marketplace '$MARKETPLACE' deregistered."
+    else
+        warn "Could not deregister '$MARKETPLACE'."
+    fi
+else
+    info "Marketplace '$MARKETPLACE' not registered — skipping."
+fi
+
+print ""
+success "Done — bundled plugins removed."

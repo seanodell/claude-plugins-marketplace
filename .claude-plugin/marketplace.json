@@ -1,0 +1,14 @@
+{
+  "name": "seanodell",
+  "owner": { "name": "Sean O'Dell" },
+  "metadata": {
+    "description": "Sean O'Dell's Claude Code plugins, bundled with the marketplace that serves them"
+  },
+  "plugins": [
+    {
+      "name": "hello-world",
+      "source": "./plugins/hello-world",
+      "description": "Minimal plugin used to validate the local-install pipeline"
+    }
+  ]
+}
