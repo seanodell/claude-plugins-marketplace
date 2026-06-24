@@ -4,7 +4,7 @@
 source "${0:A:h}/_lib.sh"
 
 MARKETPLACE="seanodell"
-PLUGINS=(hello-world github-ssh-key)
+PLUGINS=(toolkit)
 
 need_claude
 need_jq

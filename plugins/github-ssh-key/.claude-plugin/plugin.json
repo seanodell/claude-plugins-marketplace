@@ -1,7 +1,0 @@
-{
-  "name": "github-ssh-key",
-  "description": "Generate per-org GitHub SSH keys, upload them to your GitHub account, and wire up SSH host aliases and git URL rewrites so the right key is used automatically",
-  "version": "0.1.0",
-  "author": { "name": "Sean O'Dell" },
-  "license": "Apache-2.0"
-}

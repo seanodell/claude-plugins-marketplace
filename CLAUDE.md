@@ -8,7 +8,7 @@ A Claude Code plugin marketplace monorepo: the marketplace catalog and every plu
 
 ## Structure conventions
 
-1. **Marketplace catalog** — `.claude-plugin/marketplace.json` at the repo root names the marketplace and lists each plugin with a **repo-relative** `source` path (e.g. `./plugins/hello-world`). Relative sources are what let the same manifest serve both local-path installs and the future GitHub install.
+1. **Marketplace catalog** — `.claude-plugin/marketplace.json` at the repo root names the marketplace and lists each plugin with a **repo-relative** `source` path (e.g. `./plugins/toolkit`). Relative sources are what let the same manifest serve both local-path installs and the future GitHub install.
 2. **Plugins** — each plugin is a self-contained directory under `plugins/<name>/` with its own `.claude-plugin/plugin.json` manifest.
 3. **Manifests only in `.claude-plugin/`** — *only* `marketplace.json` / `plugin.json` go inside a `.claude-plugin/` dir. Everything else (`skills/`, `commands/`, `agents/`, `hooks/`, `.mcp.json`) sits at the plugin root and is auto-discovered.
 4. **Skills** — a skill is `plugins/<plugin>/skills/<skill>/SKILL.md`: markdown with `name` + `description` frontmatter. The `description` must say *what it does and when to use it* — that's what makes it discoverable/invocable.
