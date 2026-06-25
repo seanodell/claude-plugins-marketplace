@@ -39,7 +39,10 @@ Claude never runs `git commit` without explicit user approval. The flow every ti
 
 7. **Commit.** On approval: `git commit -F /tmp/commit-msg-<branch>`
 
-8. **Get push approval.** Ask separately with `AskUserQuestion` — "Push to origin?" — a distinct yes/no after the commit succeeds.
+8. **Get push approval.** Ask separately with `AskUserQuestion` after the commit succeeds:
+   - Header: "Push"
+   - Question: "Push to origin?"
+   - Options: "Yes, push now (Recommended)", "No, skip"
 
 9. **Push.** On approval: `git push -u origin HEAD`
 
