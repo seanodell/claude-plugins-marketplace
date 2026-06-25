@@ -52,7 +52,7 @@ A helper library should provide at minimum:
 header "..."             # bold heading
 info "..."               # informational line
 success "..."            # ✓ line
-warn "..."               # ⚠ to stderr
+warn "..."               # ⚠ warning line
 error "..."              # ✗ to stderr
 dim "..."                # dimmed text (e.g. echoing a command before running it)
 ask "prompt" "default"   # interactive text input → result in $REPLY

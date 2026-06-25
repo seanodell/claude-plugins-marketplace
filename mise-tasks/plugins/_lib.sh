@@ -1,11 +1,28 @@
 #!/usr/bin/env zsh
 # Shared helpers for the plugins:* tasks. Not a task itself (leading underscore).
 
+[[ -n "${MISE_ORIGINAL_CWD}" ]] && cd "$MISE_ORIGINAL_CWD"
+
+header()  { print -P "\n%B$*%b"; }
 success() { print -P "%F{green}✓%f $*"; }
 info()    { print -P "%F{cyan}•%f $*"; }
 warn()    { print -P "%F{yellow}!%f $*"; }
 error()   { print -P "%F{red}✗%f $*" >&2; }
 dim()     { print -P "%F{8}$*%f"; }
+
+ask() {
+    local prompt="$1" default="${2:-}"
+    [[ -n "$default" ]] && prompt="$prompt [$default]"
+    print -Pn "%B${prompt}:%b " >&2
+    read -r REPLY
+    [[ -z "$REPLY" && -n "$default" ]] && REPLY="$default"
+}
+
+confirm() {
+    print -Pn "%B$1%b [Y/n] " >&2
+    read -r REPLY
+    [[ "${REPLY:l}" != n* ]]
+}
 
 # Guard: the plugins tasks shell out to the Claude CLI. Fail clearly before
 # mutating any marketplace/plugin state if it isn't available.

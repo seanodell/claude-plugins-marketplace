@@ -15,6 +15,8 @@ A Claude Code plugin marketplace monorepo: the marketplace catalog and every plu
 
 ## mise task conventions
 
+See the `toolkit:mise-tasks` skill for full conventions on file format, naming, helper libraries, and driving tasks from Claude. Repo-specific rules:
+
 1. **Namespaced under `plugins:`** — all mise tasks live under `mise-tasks/plugins/`, so they're invoked as `mise run plugins:<task>`. This is the standing convention for the repo.
 2. **zsh file tasks** — tasks are zsh file tasks (`#!/usr/bin/env zsh` line 1, `#MISE description="..."` line 2, executable). No Python, no logic in `mise.toml`.
 3. **Shared helpers** — `mise-tasks/plugins/_lib.sh` (leading underscore = not a task) holds output helpers and `need_claude`; source it via `source "${0:A:h}/_lib.sh"` so cwd doesn't matter.
