@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: Git workflow conventions — how Claude stages, authors, and proposes commits with user approval, conventional commit format, and push handling.
+description: Git workflow conventions — cloning repos, how Claude stages, authors, and proposes commits with user approval, conventional commit format, and push handling.
 ---
 
 # Git Workflow
@@ -60,3 +60,29 @@ Rules:
 3. Exactly one blank line between subject and body.
 4. Body is required, written as bullet points (`- item`) — one point per line. No prose paragraphs.
 5. No co-author or attribution lines.
+
+## Cloning a repository
+
+1. **Parse the URL.** Accept any GitHub URL form:
+   - HTTPS: `https://github.com/<org>/<repo>` or `https://github.com/<org>/<repo>.git`
+   - SSH: `git@github.com:<org>/<repo>.git`
+
+2. **Protocol.** If the URL is HTTPS, ask with `AskUserQuestion` before proceeding:
+   - Header: "Protocol"
+   - Question: "Clone via SSH or HTTPS?"
+   - Options: "SSH" (recommended — works with org keys from `setup-org-key`), "HTTPS"
+   - Convert to SSH form if chosen: `git@github.com:<org>/<repo>.git`
+
+3. **Confirm the clone path.** Ask with `AskUserQuestion`:
+   - Header: "Clone path"
+   - Question: "Where should `<repo>` be cloned?"
+   - Default option: `~/Development/<org>/<repo>` — derive `<org>` and `<repo>` from the URL
+   - "Other" lets the user type a custom path
+
+4. **Clone.** Create the parent directory and clone:
+   ```bash
+   mkdir -p ~/Development/<org>
+   git clone <url> ~/Development/<org>/<repo>
+   ```
+
+5. **Stop on no.** If the user declines or provides no path, stop.
