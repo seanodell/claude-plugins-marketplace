@@ -85,4 +85,10 @@ Rules:
    git clone <url> ~/Development/<org>/<repo>
    ```
 
-5. **Stop on no.** If the user declines or provides no path, stop.
+5. **Credential failure.** If the clone fails with an authentication or permission error, suggest running the `setup-org-key` skill to generate and register an SSH key for the org, then retry with SSH.
+
+6. **Stop on no.** If the user declines or provides no path, stop.
+
+## Credential errors on push or clone
+
+Any time `git push` or `git clone` fails with an authentication or permission error, suggest running the `setup-org-key` skill. It generates an ed25519 key scoped to the org, uploads it to GitHub, and configures an SSH host alias and URL rewrite so future operations use the right key automatically.
