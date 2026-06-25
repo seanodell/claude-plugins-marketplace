@@ -59,29 +59,15 @@ op item list --vault Employee               # list items in a vault
 
 Use vault and item **IDs** (not names) in anything committed or automated — names can change, IDs are stable.
 
-## Using secrets in scripts and tasks
+## Reading secrets in scripts and tasks
 
-**Inject via `op run`** — resolves `op://` references in environment variables before running a command. The secret values are never written to disk or visible in process listings:
-
-```bash
-op run --env-file=.env -- mise run deploy
-op run --env-file=.env -- ./server
-```
-
-Where `.env` contains references, not raw values:
-
-```
-API_KEY=op://Employee/MyApp/api-key
-DATABASE_URL=op://Shared/Production/database-url
-```
-
-**Read directly in a script** (for one-off values):
+Read a secret into a variable:
 
 ```bash
 token=$(op read "op://Employee/GitHub/token")
 ```
 
-Never pass the result as a command-line argument — assign to a variable and use from there.
+Never pass the result as a command-line argument — assign to a variable and use it from there. Never print or log it.
 
 ## What Claude should never do
 
