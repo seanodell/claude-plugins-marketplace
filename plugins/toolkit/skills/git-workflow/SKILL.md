@@ -9,18 +9,24 @@ description: Git workflow conventions — cloning repos, how Claude stages, auth
 
 Claude never runs `git commit` without explicit user approval. The flow every time:
 
-1. **Stage** specific files with `git add <files>`. Never `git add .` or `git add -A` — stage only the files relevant to the current change.
+1. **Check git identity.** Run `git config user.name` and `git config user.email`. If either is missing, ask the user for their name and email before proceeding, then set them locally:
+   ```bash
+   git config user.name "Full Name"
+   git config user.email "email@example.com"
+   ```
 
-2. **Author the message.** Write a conventional-commit message (format below) using the Write tool to `/tmp/commit-msg-<branch>`, where `<branch>` is the current branch name. The message must never be passed as a command-line argument — always use `-F`.
+3. **Stage** specific files with `git add <files>`. Never `git add .` or `git add -A` — stage only the files relevant to the current change.
 
-3. **Validate** (warn, don't block):
+4. **Author the message.** Write a conventional-commit message (format below) using the Write tool to `/tmp/commit-msg-<branch>`, where `<branch>` is the current branch name. The message must never be passed as a command-line argument — always use `-F`.
+
+5. **Validate** (warn, don't block):
    - Subject must match `type(scope): description` — e.g. `feat(auth): add OAuth flow`
    - Subject line is 72 characters or fewer
    - A blank line must separate subject from body
 
-4. **Show the staged summary.** Run `git diff --cached --stat` to get the file list.
+6. **Show the staged summary.** Run `git diff --cached --stat` to get the file list.
 
-5. **Relay.** In the same reply as the approval prompt, show the proposed commit message as a markdown blockquote, followed by the staged files as plain text. Use `> &nbsp;` for the blank line between subject and body so it renders visibly:
+7. **Relay.** In the same reply as the approval prompt, show the proposed commit message as a markdown blockquote, followed by the staged files as plain text. Use `> &nbsp;` for the blank line between subject and body so it renders visibly:
 
    ```
    > feat(auth): add OAuth flow
@@ -35,18 +41,18 @@ Claude never runs `git commit` without explicit user approval. The flow every ti
    - `src/auth.ts` (+42 -3)
    - `src/routes/callback.ts` (+18)
 
-6. **Get commit approval.** Ask with `AskUserQuestion` — "Commit these changes?" Never proceed on a free-text guess.
+8. **Get commit approval.** Ask with `AskUserQuestion` — "Commit these changes?" Never proceed on a free-text guess.
 
-7. **Commit.** On approval: `git commit -F /tmp/commit-msg-<branch>`
+9. **Commit.** On approval: `git commit -F /tmp/commit-msg-<branch>`
 
-8. **Get push approval.** Ask separately with `AskUserQuestion` after the commit succeeds:
-   - Header: "Push"
-   - Question: "Push to origin?"
-   - Options: "Yes, push now (Recommended)", "No, skip"
+10. **Get push approval.** Ask separately with `AskUserQuestion` after the commit succeeds:
+    - Header: "Push"
+    - Question: "Push to origin?"
+    - Options: "Yes, push now (Recommended)", "No, skip"
 
-9. **Push.** On approval: `git push -u origin HEAD`
+11. **Push.** On approval: `git push -u origin HEAD`
 
-10. **Stop on no.** If the user declines at any step, stop — nothing further changes.
+12. **Stop on no.** If the user declines at any step, stop — nothing further changes.
 
 ## Conventional commit format
 

@@ -112,6 +112,27 @@ It should also restore the working directory on source, so tasks act on the dire
 
 Tasks must be safe to re-run. Check before mutating — don't assume state is clean.
 
+## Troubleshooting mise activation
+
+If `mise run` or `mise exec` fails because `mise` is not found, the shell is not activated. Check:
+
+```bash
+command -v mise          # should print a path
+echo $MISE_SHELL         # should print "zsh", "bash", etc. — empty means not activated
+```
+
+To activate mise in the current shell profile:
+
+```bash
+# Check if activation is already present
+grep -q "mise activate" ~/.zshrc && echo "already present" || echo "missing"
+
+# If missing, add it
+echo '\neval "$(mise activate zsh)"' >> ~/.zshrc
+```
+
+After adding, open a new terminal — the current session will not pick it up. Once activated, `mise install` installs the tools declared in `mise.toml` for the current project.
+
 ## Driving tasks from Claude
 
 When a skill drives a mise task that would otherwise trigger a Bash permission prompt, collapse the two prompts into one with `allowed-tools` in the skill's frontmatter:
