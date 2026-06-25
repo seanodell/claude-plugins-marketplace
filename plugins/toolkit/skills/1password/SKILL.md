@@ -1,11 +1,9 @@
 ---
 name: 1password
-description: How to set up and use the 1Password CLI (op) — installation, connecting to the desktop app, reading secrets, and injecting secrets into commands without exposing them.
+description: How to set up the 1Password CLI (op) — installation, connecting to the 1Password 8 desktop app, and verifying the connection.
 ---
 
-# 1Password CLI (op)
-
-`op` is the 1Password CLI. It lets scripts and tasks read secrets from 1Password at runtime without committing them or putting them in plain-text `.env` files.
+# 1Password CLI Setup (op)
 
 ## Installation
 
@@ -29,7 +27,7 @@ Verify: `op --version`
 
 ## Connecting to the desktop app
 
-`op` authenticates through the **1Password 8** desktop app's CLI integration — not a separate login. It requires 1Password 8 (not 7).
+`op` authenticates through the **1Password 8** desktop app's CLI integration. It requires 1Password 8 — version 7 cannot integrate with the CLI.
 
 1. Open 1Password 8
 2. Go to **Settings → Developer**
@@ -39,41 +37,12 @@ Verify: `op --version`
 Verify the connection:
 
 ```bash
-op account list   # should list your account(s)
+op account list
 ```
 
-If `op account list` returns nothing, the desktop app integration isn't active. Re-check Settings → Developer, or try locking and unlocking 1Password.
+This should list your account. If it returns nothing, the integration isn't active yet.
 
-> Note: `op whoami` is not a reliable signal — it reports "not signed in" until a session is unlocked, even when `op` can read fine. Use `op account list` instead.
-
-## Vaults and addressing
-
-Secrets are addressed as `op://<vault>/<item>/<field>`:
-
-```bash
-op read "op://Employee/GitHub/token"        # read one field
-op item get "GitHub" --vault Employee       # inspect a whole item
-op vault list                               # list available vaults
-op item list --vault Employee               # list items in a vault
-```
-
-Use vault and item **IDs** (not names) in anything committed or automated — names can change, IDs are stable.
-
-## Reading secrets in scripts and tasks
-
-Read a secret into a variable:
-
-```bash
-token=$(op read "op://Employee/GitHub/token")
-```
-
-Never pass the result as a command-line argument — assign to a variable and use it from there. Never print or log it.
-
-## What Claude should never do
-
-- Never run `op item create` or `op item edit` without explicit user instruction — these modify the vault
-- Never print or log a value returned by `op read`
-- Never read `.env` files directly, even if they contain only `op://` references — see the `secrets` skill
+> `op whoami` is not a reliable signal — it reports "not signed in" until a session is unlocked even when `op` works fine. Always use `op account list` to check.
 
 ## Troubleshooting
 
@@ -82,4 +51,4 @@ Never pass the result as a command-line argument — assign to a variable and us
 | `op account list` returns nothing | Enable CLI integration in 1Password 8 → Settings → Developer |
 | `op` not found | Run `mise install` (if declared in `mise.toml`) or `brew install 1password-cli` |
 | `[ERROR] 401` on read | Lock and unlock 1Password in the desktop app to refresh the session |
-| Wrong account reading the secret | Check `op account list`; switch with `op signin --account <shorthand>` |
+| Wrong account | Check `op account list`; switch with `op signin --account <shorthand>` |
