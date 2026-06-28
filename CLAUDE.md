@@ -31,6 +31,10 @@ See the `toolkit:mise-tasks` skill for full conventions on file format, naming, 
 3. **Live re-sync** — a path-based marketplace refreshes from the working copy via `claude plugin marketplace update` (run on re-install). Do **not** use `claude plugin update` here — that's for remote plugins only.
 4. **Restart to load** — newly installed skills load on the next Claude Code start.
 
+## Committing changes
+
+Before every commit in this repo, bump the patch version in `plugins/toolkit/.claude-plugin/plugin.json` (e.g. `0.1.1` → `0.1.2`) and include it in the same commit. This is required so `claude plugin update toolkit@seanodell` detects and fetches the new content — the plugin cache is version-keyed and a no-op if the version doesn't change.
+
 ## Contracts (keep these in sync)
 
 1. **Marketplace name** — `seanodell` is shared across `marketplace.json`, the `plugins:*` tasks, and every `<plugin>@seanodell` reference. All must agree.

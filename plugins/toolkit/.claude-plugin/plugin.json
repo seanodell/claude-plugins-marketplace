@@ -1,7 +1,7 @@
 {
   "name": "toolkit",
   "description": "Sean O'Dell's personal Claude Code toolkit — GitHub SSH key management and more",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": { "name": "Sean O'Dell" },
   "license": "Apache-2.0"
 }
