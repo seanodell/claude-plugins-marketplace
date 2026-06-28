@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: Git workflow conventions — cloning repos, how Claude stages, authors, and proposes commits with user approval, conventional commit format, and push handling.
+description: MUST READ before any git commit, git add, or git clone — conventional commit format, approval flow, staging rules, and push handling.
 ---
 
 # Git Workflow

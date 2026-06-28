@@ -1,6 +1,6 @@
 ---
 name: secrets
-description: How Claude handles secrets safely — never reading or committing .env files, writing scripts that source secrets rather than exposing them, and what to do when a secret is exposed.
+description: MUST READ before touching any secret, credential, .env file, or API key — rules for safe handling, how to write scripts that source secrets without exposing them, and what to do when a secret is exposed.
 ---
 
 # Secrets Handling
